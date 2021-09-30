@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_data_storage_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:textColor="@color/color_666"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_data_storage_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20"
+        android:text="导出数据到本地"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_data_storage_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20"
+        android:text="导入本地数据"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_data_storage_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20"
+        android:text="删除本地数据"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_20"
+        android:text="数据仅支持JSON格式，内容应与抽卡记录界面返回一致\n卸载App时请及时备份导出的数据"
+        android:textColor="@color/color_666"
+        android:textSize="@dimen/sp_12" />
+</LinearLayout>

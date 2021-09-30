@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_2"
+    android:background="@color/color_bg"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_record_item_name"
+        style="@style/tv_record_item"
+        tools:text="迪卢克"
+        tools:textColor="@color/color_stars5" />
+
+    <TextView
+        android:id="@+id/tv_record_item_type"
+        style="@style/tv_record_item"
+        android:layout_marginStart="@dimen/dp_2"
+        tools:text="5星角色"
+        tools:textColor="@color/color_stars5" />
+
+    <TextView
+        android:id="@+id/tv_record_item_num"
+        style="@style/tv_record_item"
+        android:layout_marginStart="@dimen/dp_2"
+        tools:text="5"
+        tools:textColor="@color/color_stars5" />
+</LinearLayout>

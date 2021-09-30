@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.yooking.genshin.widget.swipelayout.EasySwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_2"
+    app:contentView="@id/rv_item_user_content"
+    app:rightMenuView="@id/tv_item_user_delete">
+
+    <RelativeLayout
+        android:id="@+id/rv_item_user_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20">
+
+        <ImageView
+            android:id="@+id/iv_user_drag"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/dp_3"
+            android:src="@mipmap/ic_user_drag" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp_60"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="昵称："
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:id="@+id/tv_user_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_15"
+                    tools:text="yooking" />
+
+                <ImageView
+                    android:id="@+id/iv_user_edit"
+                    android:layout_width="@dimen/dp_13"
+                    android:layout_height="@dimen/dp_13"
+                    android:src="@mipmap/ic_user_edit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
+                    android:gravity="end"
+                    android:text="(UID："
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/tv_user_uid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="198915592" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=")"
+                    android:textColor="@color/color_666"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp_60"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="统计："
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:id="@+id/tv_user_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_333"
+                    android:textSize="@dimen/sp_15"
+                    tools:text="抽卡x次，五星x次，四星x次" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_user_analysis"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_marginEnd="@dimen/dp_18"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dp_6"
+                    android:paddingBottom="@dimen/dp_6"
+                    android:text="分析"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/tv_user_myrecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_18"
+                    android:padding="@dimen/dp_6"
+                    android:text="抽卡统计"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_item_user_delete"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="删\n除"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/sp_15" />
+</cn.yooking.genshin.widget.swipelayout.EasySwipeMenuLayout>

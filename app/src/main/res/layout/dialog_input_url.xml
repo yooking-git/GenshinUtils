@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_dialog_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:hint="请输入链接地址"
+        android:lines="1"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingEnd="@dimen/dp_30"
+        android:textSize="15sp" />
+</LinearLayout>
