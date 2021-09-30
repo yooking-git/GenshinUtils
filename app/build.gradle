@@ -28,6 +28,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def date = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("Asia/Shanghai"))
+            outputFileName = "PaimengPro_V${defaultConfig.versionName}_${date}.apk"
+        }
+    }
 }
 
 dependencies {

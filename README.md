@@ -16,5 +16,8 @@
 2. 首页![home](/readme/home.png)
 3. 用户![user](/readme/user.png)
 4. 分析![analysis](/readme/analysis.png)
-5. 记录![record](readme/record.png)
-6. 导入导出![storage](readme/storage.png)
+5. 记录![record](/readme/record.png)
+6. 导入导出![storage](/readme/storage.png)
+
+# 下载路径
+[apkFiles](/apk/)
