@@ -9,7 +9,7 @@
     <application
         android:name=".YApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon_paimeng120"
+        android:icon="@mipmap/icon_paimeng120_white"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
