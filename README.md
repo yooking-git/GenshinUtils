@@ -12,12 +12,14 @@
 6. 本地化导入/导出：用于备份数据和导入本地数据
 
 # 界面
-1. 图标![icon](/readme/icon.png)
-2. 首页![home](/readme/home.png)
-3. 用户![user](/readme/user.png)
-4. 分析![analysis](/readme/analysis.png)
-5. 记录![record](/readme/record.png)
-6. 导入导出![storage](/readme/storage.png)
+
+<img src="/readme/icon.png" width="30%">
+<img src="/readme/home.png" width="30%">
+<img src="/readme/user.png" width="30%">
+
+<img src="/readme/analysis.png" width="30%">
+<img src="/readme/record.png" width="30%">
+<img src="/readme/storage.png" width="30%">
 
 # 下载路径
 [apkFiles](/apk/)
