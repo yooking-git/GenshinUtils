@@ -12,14 +12,16 @@
 6. 本地化导入/导出：用于备份数据和导入本地数据
 
 # 界面
-
+<div>
 <img src="/readme/icon.png" width="30%">
 <img src="/readme/home.png" width="30%">
 <img src="/readme/user.png" width="30%">
-
+</div>
+<div>
 <img src="/readme/analysis.png" width="30%">
 <img src="/readme/record.png" width="30%">
 <img src="/readme/storage.png" width="30%">
+</div>
 
 # 下载路径
 [apkFiles](/apk/)
