@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
+import cn.yooking.genshin.utils.NoMultipleItemClickListener
 import cn.yooking.genshin.utils.dialog.*
 import cn.yooking.genshin.view.presenter.MainPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -53,105 +54,122 @@ class MainActivity : BaseActivity() {
         if (allUser.size > 0) {
             uid = allUser[0].uid
             holder.setText(R.id.tv_main_user, "${allUser[0].nickname}(uid:${allUser[0].uid})")
+            holder.setText(R.id.tv_main_lasttime, "更新时间：${allUser[0].lastDate}")
         }
     }
 
     override fun initListener() {
-        holder.setOnClickListener(R.id.tv_main_user) {
+        holder.setOnClickListener(R.id.ll_main_user, clickListener = object : View.OnClickListener {
             var which = 0
-            //读取本地数据
-            val allUser = SQLiteHelper.instance.findAllUser()
+            override fun onClick(v: View?) {
+                //读取本地数据
+                val allUser = SQLiteHelper.instance.findAllUser()
 
-            if (allUser.isEmpty()) {
-                Toast.makeText(
+                if (allUser.isEmpty()) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "未找到抽卡记录，请先导入数据",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+                if (allUser.size == 1) {
+                    intent.putExtra("uid", allUser[0].uid)
+                    startActivity(intent)
+                    return
+                }
+
+                val array =
+                    Array(allUser.size) { "${allUser[it].nickname}(${allUser[it].uid})" }
+
+                val dialog = createChoiceDialog(
                     this@MainActivity,
-                    "未找到抽卡记录，请先导入数据",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-            if (allUser.size == 1) {
-                intent.putExtra("uid", allUser[0].uid)
-                startActivity(intent)
-                return@setOnClickListener
-            }
-
-            val array =
-                Array(allUser.size) { "${allUser[it].nickname}(${allUser[it].uid})" }
-
-            val dialog = createChoiceDialog(
-                this,
-                "请选择当前用户",
-                which, array
-            ) { _, i ->
-                which = i
-            }
-            dialog.addListener(TAG_RIGHT, "确定") { _, _ ->
-                uid = allUser[which].uid
-                if (it is TextView) {
-                    val name = "${allUser[which].nickname}(uid:${allUser[which].uid})"
-                    it.text = name
+                    "请选择当前用户",
+                    which, array
+                ) { _, i ->
+                    which = i
                 }
-            }.addListener(TAG_CENTER, "取消")
-            dialog.show()
-        }
+                dialog.addListener(TAG_RIGHT, "确定") { _, _ ->
+                    uid = allUser[which].uid
+                    holder.setText(
+                        R.id.tv_main_user,
+                        "${allUser[which].nickname}(uid:${allUser[which].uid})"
+                    )
+                    holder.setText(R.id.tv_main_lasttime, "更新时间：${allUser[which].lastDate}")
+                }.addListener(TAG_CENTER, "取消")
+                dialog.show()
+            }
+        })
 
-        adapter.setOnItemClickListener { _, _, position: Int ->
-            val item = adapter.getItem(position)
-            if (item.containsKey("tag")) {
-                when (item["tag"]) {
-                    "net" -> {
-                        val inputView = createInputView()
-                        val dialog = createDialog(this@MainActivity, "请输入链接地址", inputView)
-                        dialog.addListener(
-                            TAG_RIGHT, "确定"
-                        ) { _, _ ->
-                            presenter.clear()
-                            presenter.clientUrl()
-                        }.addListener(TAG_CENTER, "取消")
-                        dialog.show()
-                    }
-                    "analysis" -> {
-                        if (uid.isNotEmpty()) {
-                            val intent = Intent(
-                                this@MainActivity,
-                                LotteryAnalysisActivity::class.java
-                            )
-                            intent.putExtra("uid", uid)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this, "暂无用户数据，请先选择用户", Toast.LENGTH_SHORT).show()
+        adapter.setOnItemClickListener(object : NoMultipleItemClickListener() {
+            override fun onItemClick(a: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                if (!clickEnable(view)) return
+
+                val item = adapter.getItem(position)
+                if (item.containsKey("tag")) {
+                    when (item["tag"]) {
+                        "net" -> {
+                            val inputView = createInputView()
+                            val dialog = createDialog(this@MainActivity, "请输入链接地址", inputView)
+                            dialog.addListener(
+                                TAG_RIGHT, "确定"
+                            ) { _, _ ->
+                                presenter.clear()
+                                presenter.clientUrl()
+                            }.addListener(TAG_CENTER, "取消")
+                            dialog.show()
                         }
-                    }
-                    "user" -> {
-                        val intent = Intent(
-                            this@MainActivity,
-                            UserListActivity::class.java
-                        )
-                        startActivity(intent)
-                    }
-                    "local" -> {
-                        val intent = Intent(
-                            this@MainActivity,
-                            DataStorageActivity::class.java
-                        )
-                        startActivity(intent)
-                    }
-                    "result" -> {
-                        if (uid.isNotEmpty()) {
+                        "analysis" -> {
+                            if (uid.isNotEmpty()) {
+                                val intent = Intent(
+                                    this@MainActivity,
+                                    LotteryAnalysisActivity::class.java
+                                )
+                                intent.putExtra("uid", uid)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "暂无用户数据，请先选择用户",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        "user" -> {
                             val intent = Intent(
                                 this@MainActivity,
-                                RecordActivity::class.java
+                                UserListActivity::class.java
                             )
-                            intent.putExtra("uid", uid)
                             startActivity(intent)
-                        } else {
-                            Toast.makeText(this, "暂无用户数据，请先选择用户", Toast.LENGTH_SHORT).show()
+                        }
+                        "local" -> {
+                            val intent = Intent(
+                                this@MainActivity,
+                                DataStorageActivity::class.java
+                            )
+                            startActivity(intent)
+                        }
+                        "result" -> {
+                            if (uid.isNotEmpty()) {
+                                val intent = Intent(
+                                    this@MainActivity,
+                                    RecordActivity::class.java
+                                )
+                                intent.putExtra("uid", uid)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "暂无用户数据，请先选择用户",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 }
             }
-        }
+
+        })
     }
 
     private fun createInputView(): View {

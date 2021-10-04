@@ -11,12 +11,27 @@ android {
         applicationId "cn.yooking.genshin"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("GenshinKeystore.jks")
+            storePassword "yooking"
+            keyAlias "yooking"
+            keyPassword "yooking"
+        }
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.myConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.myConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

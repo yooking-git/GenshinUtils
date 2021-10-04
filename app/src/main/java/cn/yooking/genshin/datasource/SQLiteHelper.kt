@@ -4,11 +4,13 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import cn.yooking.genshin.datasource.data.Record
 import cn.yooking.genshin.datasource.data.User
+import cn.yooking.genshin.utils.DateUtil
 import org.litepal.LitePal
 import org.litepal.LitePal.getDatabase
 import org.litepal.extension.find
 import org.litepal.extension.findAll
 import org.litepal.extension.findFirst
+import java.util.*
 
 
 /**
@@ -36,20 +38,22 @@ class SQLiteHelper {
 
         val allUser = LitePal.findAll<User>()
         var hasUser = false
-        for (user in allUser) {
-            if (user.uid == uid) {
+
+        var user: User? = null
+        for (item in allUser) {
+            if (item.uid == uid) {
                 hasUser = true
+                user = item
                 break
             }
         }
 
         if (!hasUser) {
-            val user = User()
+            user = User()
             user.uid = uid
-            user.save()
         }
 
-
+        var lastDate: Date = DateUtil.str2Date("1990-01-01 00:00:00")!!
         for (datum in data) {
             val count = LitePal.where("cardId=?", datum.cardId).count(Record::class.java)
             if (count == 0) {
@@ -58,7 +62,14 @@ class SQLiteHelper {
             } else {
                 repeatCount++
             }
+            val date = DateUtil.str2Date(datum.time)
+            if (date?.after(lastDate) == true) {
+                lastDate = date
+            }
         }
+
+        user?.lastDate = DateUtil.date2Str(lastDate)
+        user?.save()
         return intArrayOf(saveCount, repeatCount)
     }
 
@@ -87,6 +98,13 @@ class SQLiteHelper {
         val values = ContentValues()
         values.put("nickname", nickname)
         LitePal.updateAll(User::class.java, values, "uid=?", uid)
+    }
+
+    /**
+     * 修改最后一次抽卡时间
+     */
+    fun updateLastDate() {
+
     }
 
     /**
@@ -168,7 +186,7 @@ class SQLiteHelper {
     /**
      * 删除用户、但不删除数据
      */
-    fun deleteUserWithoutRecord(uid:String){
+    fun deleteUserWithoutRecord(uid: String) {
         //1.删除用户
         val findFirst = LitePal.where("uid=${uid}").findFirst<User>()
         findFirst?.delete()

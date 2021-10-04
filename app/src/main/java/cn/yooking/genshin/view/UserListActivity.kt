@@ -10,10 +10,12 @@ import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
 import cn.yooking.genshin.adapter.DraggableAdapter
 import cn.yooking.genshin.datasource.SQLiteHelper
+import cn.yooking.genshin.utils.NoMultipleItemChildClickListener
 import cn.yooking.genshin.utils.dialog.TAG_CENTER
 import cn.yooking.genshin.utils.dialog.TAG_RIGHT
 import cn.yooking.genshin.utils.dialog.addListener
 import cn.yooking.genshin.utils.dialog.createDialog
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
@@ -123,54 +125,60 @@ class UserListActivity : BaseActivity() {
             R.id.tv_user_myrecord,
             R.id.tv_item_user_delete
         )
-        adapter.setOnItemChildClickListener { _, view, position ->
-            val item = adapter.getItem(position)
-            val uid = item["uid"]
-            when (view.id) {
-                R.id.tv_user_analysis -> {
-                    val intent = Intent(
-                        this@UserListActivity,
-                        LotteryAnalysisActivity::class.java
-                    )
-                    intent.putExtra("uid", uid)
-                    startActivity(intent)
-                }
-                R.id.iv_user_edit -> {
-                    val inputView = createInputView()
-                    val dialog = createDialog(this@UserListActivity, "昵称修改(UID:${uid})", inputView)
-                    dialog.addListener(
-                        TAG_RIGHT, "确定"
-                    ) { _, _ ->
-                        val nickname = holder.getText(R.id.et_dialog_nickname)
-                        SQLiteHelper.instance.updateNickname(uid ?: "unknown", nickname)
-                        item["nickname"] = nickname
-                        adapter.notifyItemChanged(position)
-                    }.addListener(TAG_CENTER, "取消")
-                    dialog.show()
-                }
-                R.id.tv_user_myrecord -> {
-                    val intent = Intent(
-                        this@UserListActivity,
-                        RecordActivity::class.java
-                    )
-                    intent.putExtra("uid", uid)
-                    startActivity(intent)
-                }
-                R.id.tv_item_user_delete -> {
-                    createDialog(
-                        this,
-                        "删除提醒",
-                        "本次删除仅删除(uid：${uid})的用户相关信息，不删除抽卡记录，下次导入时将重新合并数据。\n确认是否删除数据？"
-                    ).addListener(
-                        TAG_RIGHT, "确定"
-                    ) { _, _ ->
-                        SQLiteHelper.instance.deleteUserWithoutRecord(uid!!)
-                        adapter.remove(adapter.getItem(position))
-                    }.addListener(TAG_CENTER, "取消").show()
+        adapter.setOnItemChildClickListener(object : NoMultipleItemChildClickListener() {
+            override fun onItemChildClick(a: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                if (!clickEnable(view)) return
 
+                val item = adapter.getItem(position)
+                val uid = item["uid"]
+                when (view.id) {
+                    R.id.tv_user_analysis -> {
+                        val intent = Intent(
+                            this@UserListActivity,
+                            LotteryAnalysisActivity::class.java
+                        )
+                        intent.putExtra("uid", uid)
+                        startActivity(intent)
+                    }
+                    R.id.iv_user_edit -> {
+                        val inputView = createInputView()
+                        val dialog =
+                            createDialog(this@UserListActivity, "昵称修改(UID:${uid})", inputView)
+                        dialog.addListener(
+                            TAG_RIGHT, "确定"
+                        ) { _, _ ->
+                            val nickname = holder.getText(R.id.et_dialog_nickname)
+                            SQLiteHelper.instance.updateNickname(uid ?: "unknown", nickname)
+                            item["nickname"] = nickname
+                            adapter.notifyItemChanged(position)
+                        }.addListener(TAG_CENTER, "取消")
+                        dialog.show()
+                    }
+                    R.id.tv_user_myrecord -> {
+                        val intent = Intent(
+                            this@UserListActivity,
+                            RecordActivity::class.java
+                        )
+                        intent.putExtra("uid", uid)
+                        startActivity(intent)
+                    }
+                    R.id.tv_item_user_delete -> {
+                        createDialog(
+                            this@UserListActivity,
+                            "删除提醒",
+                            "本次删除仅删除(uid：${uid})的用户相关信息，不删除抽卡记录，下次导入时将重新合并数据。\n确认是否删除数据？"
+                        ).addListener(
+                            TAG_RIGHT, "确定"
+                        ) { _, _ ->
+                            SQLiteHelper.instance.deleteUserWithoutRecord(uid!!)
+                            adapter.remove(adapter.getItem(position))
+                        }.addListener(TAG_CENTER, "取消").show()
+
+                    }
                 }
             }
-        }
+
+        })
     }
 
     private fun createInputView(): View {

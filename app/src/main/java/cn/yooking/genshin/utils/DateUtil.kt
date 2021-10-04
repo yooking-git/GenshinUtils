@@ -19,7 +19,7 @@ class DateUtil {
             }
         }
 
-        fun date2Str(date: Date, pattern: String): String {
+        fun date2Str(date: Date, pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
             return try {
                 val dateFormat = SimpleDateFormat(pattern, Locale.CHINA)
                 dateFormat.format(date)

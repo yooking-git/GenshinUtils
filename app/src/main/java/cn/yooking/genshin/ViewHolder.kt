@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.IdRes
+import cn.yooking.genshin.utils.ClickUtil
 
 
 /**
@@ -15,6 +16,8 @@ import androidx.annotation.IdRes
  * @param context Activity或Fragment对象
  */
 class ViewHolder(private var context: Context, private var view: View? = null) {
+
+    private val clickUtil = ClickUtil()
 
     private var viewMap: MutableMap<Int, View> = mutableMapOf()
 
@@ -53,8 +56,13 @@ class ViewHolder(private var context: Context, private var view: View? = null) {
     }
 
     fun setOnClickListener(vararg views: View, clickListener: View.OnClickListener) {
-        views.forEach {
-            it.setOnClickListener(clickListener)
+        views.forEach { view ->
+            clickUtil.bind(view)
+            view.setOnClickListener {
+                if (clickUtil.clickEnable()) {
+                    clickListener.onClick(view)
+                }
+            }
         }
     }
 
