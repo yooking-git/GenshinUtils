@@ -40,6 +40,6 @@
         android:layout_marginTop="@dimen/dp_6"
         android:textColor="@color/color_333"
         android:textSize="@dimen/sp_15"
-        tools:text="保底累计：0抽" />
+        tools:text="保底累计：0抽，上次五星：迪卢克" />
 
 </LinearLayout>

@@ -5,14 +5,12 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
 import cn.yooking.genshin.utils.BigDecimalUtil
-import cn.yooking.genshin.utils.ShotUtil
 import cn.yooking.genshin.view.model.LotteryAnalysisModel
 import cn.yooking.genshin.widget.echarts.entity.Series
 import cn.yooking.genshin.widget.echarts.helper.EChartsHelper
@@ -94,10 +92,10 @@ class LotteryAnalysisActivity : BaseActivity() {
                         entity.getStars5Arms(),
                         entity.getStars5Role()
                     ),
-                    entity.getSize(), item == "301"
+                    entity.getSize(), item == "301" || item == "302"
                 )
 
-                setBaseText(tvBase, entity.getLastStars5Index())
+                setBaseText(tvBase, entity)
             }
 
             private fun setECharts(eChartsView: EChartsView, title: String, type: String) {
@@ -124,6 +122,17 @@ class LotteryAnalysisActivity : BaseActivity() {
                                 stars4Arms,
                                 stars4Role,
                                 stars5Role
+                            )
+                        )
+                    }
+                    "302" -> {
+                        EChartsHelper.getPieSeries(
+                            titles = arrayOf("3星", "4星(武)", "4星(角)", "5星(武)"),
+                            values = intArrayOf(
+                                stars3,
+                                stars4Arms,
+                                stars4Role,
+                                stars5Arms
                             )
                         )
                     }
@@ -176,7 +185,10 @@ class LotteryAnalysisActivity : BaseActivity() {
                 tvStars5.text = stars5Str
             }
 
-            private fun setBaseText(tvBase: TextView, baseNum: Int) {
+            private fun setBaseText(tvBase: TextView, entity: LotteryAnalysisModel.DataEntity) {
+                val baseNum = entity.getLastStars5Index()
+                val lastStars5 = entity.getLastStars5Name()
+
                 val strStart = "保底累计 "
                 val spannableString = SpannableString("$strStart${baseNum}抽")
                 spannableString.setSpan(
@@ -185,7 +197,21 @@ class LotteryAnalysisActivity : BaseActivity() {
                     strStart.length + "$baseNum".length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
+                val spannableLast =
+                    if (lastStars5.isNotEmpty()) {
+                        val strStartLast = "，最近一次五星："
+                        val span = SpannableString("$strStartLast$lastStars5")
+                        span.setSpan(
+                            ForegroundColorSpan(resources.getColor(R.color.color_stars5)),
+                            strStartLast.length, strStartLast.length + lastStars5.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        span
+                    } else {
+                        SpannableString("")
+                    }
                 tvBase.text = spannableString
+                tvBase.append(spannableLast)
             }
         }
 

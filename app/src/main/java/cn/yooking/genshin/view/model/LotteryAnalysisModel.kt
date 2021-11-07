@@ -59,11 +59,21 @@ class LotteryAnalysisModel {
 
         private var lastStars5Index: Int = 0
 
+        private lateinit var lastStars5Name: String
+
         fun setData(data: MutableList<Record>) {
             size = data.size
 
             countStarsNum(data)
             countLastStars5Index(data)
+
+            lastStars5Name = if(data.size>0) {
+                val uid = data[0].uid
+                val gachaType = data[0].gacha_type
+                SQLiteHelper.instance.findLastStars5Name(uid, gachaType)
+            }else{
+                ""
+            }
         }
 
         fun getSize(): Int {
@@ -100,6 +110,10 @@ class LotteryAnalysisModel {
 
         fun getLastStars5Index(): Int {
             return lastStars5Index
+        }
+
+        fun getLastStars5Name(): String {
+            return lastStars5Name
         }
 
         /**

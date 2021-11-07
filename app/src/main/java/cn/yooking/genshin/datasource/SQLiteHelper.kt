@@ -10,6 +10,7 @@ import org.litepal.LitePal.getDatabase
 import org.litepal.extension.find
 import org.litepal.extension.findAll
 import org.litepal.extension.findFirst
+import org.litepal.extension.findLast
 import java.util.*
 
 
@@ -181,6 +182,17 @@ class SQLiteHelper {
             }
         }
         return stars5
+    }
+
+    /**
+     * 获取最近一次5星的名称
+     */
+    fun findLastStars5Name(uid: String, type: String): String {
+        val lastRecord: Record = LitePal
+            .where("uid=${uid} and gacha_type='${type}' and rank_type='5'")
+            .order("cardId")
+            .findLast() ?: return ""
+        return lastRecord.name
     }
 
     /**
