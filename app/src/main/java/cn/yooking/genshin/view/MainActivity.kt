@@ -42,6 +42,7 @@ class MainActivity : BaseActivity() {
         data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis"))
         data.add(mapOf("title" to "抽卡记录统计", "tag" to "result"))
         data.add(mapOf("title" to "本地化导入/导出", "tag" to "local"))
+        data.add(mapOf("title" to "关于", "tag" to "about"))
     }
 
     override fun initView() {
@@ -166,6 +167,13 @@ class MainActivity : BaseActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                        }
+                        "about" -> {
+                            val intent = Intent(
+                                this@MainActivity,
+                                AboutActivity::class.java
+                            )
+                            startActivity(intent)
                         }
                     }
                 }
