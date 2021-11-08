@@ -2,8 +2,10 @@
 buildscript {
     ext.kotlin_version = "1.5.10"
     repositories {
-        google()
-        mavenCentral()
+//        google()
+//        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
@@ -16,9 +18,13 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
+//        google()
+//        mavenCentral()
+//        jcenter() // Warning: this repository is going to shut down soon
+
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
     }
 }
 

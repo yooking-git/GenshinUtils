@@ -2,6 +2,7 @@ package cn.yooking.genshin.view
 
 import android.content.ClipboardManager
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -11,6 +12,7 @@ import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
 import cn.yooking.genshin.utils.NoMultipleItemClickListener
+import cn.yooking.genshin.utils.UrlUtils
 import cn.yooking.genshin.utils.dialog.*
 import cn.yooking.genshin.view.presenter.MainPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -176,7 +178,9 @@ class MainActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_input_url, null)
         val etUrl = view.findViewById<EditText>(R.id.et_dialog_url)
         holder.saveView(etUrl)
+        etUrl.setText("https://user.mihoyo.com/?im_out=false&sign_type=2&auth_appid=im_ccs&authkey_ver=1&win_direction=portrait&lang=zh-cn&device_type=mobile&ext=%7b%22loc%22%3a%7b%22x%22%3a2254.6728515625%2c%22y%22%3a217.0330810546875%2c%22z%22%3a-892.0397338867188%7d%2c%22platform%22%3a%22Android%22%7d&game_version=CNRELAndroid2.2.0_R4705718_S4715326_D4715326&plat_type=android&authkey=q8bArSDThcOuxT63SoBg4OKpI4olTpruzulc4I%2bhOVGopxW%2f75x6Bax9s8IeWyj9L1BmgY5aaYfIHHAmWDDYWnOhA6BgtaQqNo4FM7RC7xXjPXxXLO7uvxBGnPKGtG1s2ZdzX89MWMwu%2bAKmTR7Y9kRhxTppnZk5z7BewGlt%2f611a3itB8kYTIm9fahDnwbi3D2NEKQ3OuZJMp69GddZheYug%2fZmUNq1%2fQpLSXZmx1z8R01tQp7H2W3Qt0mQN%2fEMYRkjX4FbsifGyR46Wd4evbJDvFGMnh%2f0Dd%2f%2b%2b3b%2fdFTN1TM%2fAXZQWcVyTTPHVFRUMef6E4MfK3VfXgy0p8Bz7sJUBVKSvZgxqK8P3ejqmR8BNtBdkt1FZt0RpZ2q%2blU6P3vPvpvYepM5yb7w0zz5t4eNg3O%2b1RvJQAF2RjF2gSirvecUHKDK7gnfA6qYj7DkX0DojUa9w7TY%2bydz1ZxocuQLmr12rNNLdoLiXQucStVP1jAGFlpS6rcNrkZN0mgu%2bau6CugdguVJWLt54HAgpwHuvoDlCXXofCjulR7lB5VGNf%2b0u06riWIlyfoBPWM52Qz0ntYJ10dOP%2bzNBoAf%2buxDVciBrmZhzZlRN8i9IR%2bp%2bkafuHL7ugviBehiLgEEqskckbuEISo%2f3xUWqIYZccKsuRZa8ln6xH%2bZanyn3RmjFOyFFoUHwoE0BlRAEDLDE8X5OzbbyYNwi9bZXcwgnKHs4R2txTxL8%2bGeuwxranmE9SUD1uDdqCfAq%2bpke3jXSP26BJHIPmHgD01xv0c9af9A8eJ6rczGwRcTLPAbBhG73h4C3HIBySgyO91qNcATuPYAbcgz1MyaYuVet%2f6FRmcaN2oTwqffH%2blCQxr8RDRcNam0gm1Pe5kqabJpS2uaRU3mzoRRFjwlpS5phXoBtOGOYNUbuvi7GqmEs1kzpbrWcc6hecAeyeiVbQuvX4aqEOUoK5ZoFPRul46ZeCTQFzMimrGXBzPLOLNrGiVZJyCHfLmDN%2fqBkR2bWJdpkfeks5kEN96xm0kLKujCEhzoLi0Qr9X15YXooSDOXfnrLUZWDgqV1p59JKyw6XKDfgWMJbCSAB8nnnWCCrmAGt0%2bQvFLrb5DD4uwv9YJWLU1hkB7wpXjjkG8rd04Rtu87naGj%2fcitdytY%2blze2OHssa%2bQcLGKEJaC9%2f3KFe6PBTIAH6szaK%2fsOKcNf4fztXA4ZAPNbhYon6SX3acueTpzftCGT2E7dGo%2b1OFdKdw2XCNJnF7c55BaUDBEicJj7ikv0oFdHq1NQOjo9PByRDsX2W1S64EPzNAaoQOq6tgAHRZyl9ja9uOOZ9WbHqLuYfrmhVJ3a3hmEruqgFuwmleVRP67w%3d%3d&game_biz=hk4e_cn#/login/captcha")
 
+        Log.e("url->map", UrlUtils.getUrlParams(etUrl.text.toString()).toString())
         //获取剪贴板内容 1.剪贴板有内容 2.剪贴板内容包含关键字
         val manager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = manager.primaryClip

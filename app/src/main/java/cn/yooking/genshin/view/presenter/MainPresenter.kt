@@ -2,11 +2,13 @@ package cn.yooking.genshin.view.presenter
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
 import cn.yooking.genshin.datasource.data.Record
+import cn.yooking.genshin.utils.UrlUtils
 import cn.yooking.genshin.utils.dialog.createDialog
 import cn.yooking.genshin.utils.okhttp.OkhttpUtil
 import cn.yooking.genshin.utils.okhttp.StringCallback
@@ -30,7 +32,10 @@ class MainPresenter(val context: MainActivity) {
     private var isClientEnd = false
 
     fun hasAuthKey(url: String): Boolean {
-        return url.contains("index.html?") && url.contains("#/log")
+//        return url.contains("index.html?") && url.contains("#/log")
+//        return url.contains("?") && url.contains("#")
+        return url.contains("authkey_ver")
+                && url.replace("authkey_ver", "").contains("authkey")
     }
 
     fun clear() {
@@ -193,18 +198,31 @@ class MainPresenter(val context: MainActivity) {
 
         if (recordUrl.isEmpty()) return ""
 
-        val size = pageSize
+        val params = UrlUtils.getUrlParams(recordUrl)
+//        params["auth_appid"]="webview_gacha"
 
-        val regexStart = "index.html?"
-        val regexEnd = "#/log"
-        val startIndex = recordUrl.indexOf(regexStart) + regexStart.length
-        val endIndex = recordUrl.indexOf(regexEnd)
+        val realParams = mutableMapOf<String, String>()
 
-        val authkey = recordUrl.substring(startIndex, endIndex)
+        //账号信息
+        realParams["authkey"] = params["authkey"] ?: ""
+        realParams["authkey_ver"] = params["authkey_ver"] ?: ""
+//        realParams["sign_type"] = params["sign_type"]?:""
+
+        //语言
+        realParams["lang"] = "zh-cn"
+//        realParams["game_biz"] = "hk4e_cn"
+
+        //页码识别参数
+        realParams["gacha_type"] = type
+        realParams["page"] = "$page"
+        realParams["size"] = "$pageSize"
+        realParams["end_id"] = endId
+
 //            "authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=301&gacha_id=81b5e01fe6c50a6b9c88e94c51c312b1790141&timestamp=1630453166&lang=zh-cn&device_type=mobile&ext=%7b%22loc%22%3a%7b%22x%22%3a1930.7144775390625%2c%22y%22%3a197.19647216796876%2c%22z%22%3a-1265.9613037109375%7d%2c%22platform%22%3a%22Android%22%7d&game_version=CNRELAndroid2.1.0_R4379056_S4398912_D4398912&region=cn_gf01&authkey=NA2i0sJeV1hjmt9iK28xN6Hx4Ah0LU%2fCvYLSXe3P1NsTHEhvQBg8pgyIavkJ2As%2f2oKgHukRGjZE7uUAbSEz0mN%2b7IPbwOxtHK4wWUdIPcIZf6k9x7pTVZJ%2fh91VYSVtdhHujLQ%2frn233olhakyJA5PGhryTqdkSEkrRx2CeBprS7i93bIUja%2bfRUhCULgerJ%2fu%2fzOuCjecUkvv14pv4ED4a6VvK5GmFmdFkwcBM1YlJ1GViPa5X88TAVDm7h3hQ3POAx9kRxtE8ItZa46AIsJYA%2b2drnxy%2bDRYaySjejKlyw0k097lzQHdxWLGSbwBbOiKn9du2RSNNkhzCoTiS%2fDF%2fNUu6%2f6rIljwIF0Ue%2f1MgZq5xRVB%2bflyDtTY6agtMzx4CjgRZzo3azXG8gPy9%2b3QLSrgBbR2IqHRLANwe76o54bPILgSUqzWCfR%2bCqQCHGU1tKQhlESsDKHZWK92GYxcE0nYhLSpLZO72G%2fvXRh57bT3%2b2R3Rw9Y%2bh4KXaymGtdcDftu1D349fsmlO4n3BZIuuZsEKiAt9Er8UdlWKKVDbT61xtxMo%2bkaskxmvIW5FVU%2faFjcKTh8asqeOtpZSlOznPlEYC1Wi%2bpIClC4HljcznSaEFFz%2f54kvLuEXrTufY7JomnH28g%2fQimrtZbn%2fknJazeE4KLmExE%2ffkkgSodES5ZIzwbF74nh44iMMKVqpbhXAnfyT11h2UzoWp1vhB8ldhVAnroINi4WufxdGza5VwcROazpUKOB3nziV8xtGSeALiOswcYfeTNDkv665rp0t7fxqxt662qpYuzaYUqxU4Z2GsmGr8D1McJQZnGI9FHLS6cB8O9CtGeBrux1vuafjybQLumjGEoKS2qVEZ5PJkAY0o8CzT%2fP95CeMq6lrF7knB%2fqN4U1qWBPL9J9gSEGJzycucZMEfM2KFt8izCtTu%2bOfJXrMT4Gq1mZMGhVuHaSyRe3MTFHfL%2f4kRjDxMyKZjHFnCY3daa8iKswi8sriREDRdvidc59B%2btN1ikkSvZgtEuM%2f49%2f8kcMwTbPPU72INmX0hmi3J5anXjsBZSxud%2fPQ7kG4CZ7mbxdK6QMwMeQuE7iL7vziVTIhhdc8MVCMSLPIceeqUXgCi1xoTX2mEEbLdB7urBiXyH7gdjG0sR1RgQlpuncZK%2bkoGySfFhDIr24fWA3DP65%2ftMnJWB0ZbJUs2oBl1l09%2f2ar9YM4Xyrh01dEUE3Wm53Y33vO9AMoSdP8uIydsdjf%2fRdMGCOOjRDvWL%2bOR8T9kJpUC6wWEekas7DYfqf%2f6IgKfn8N5fPQqi4zVR86kMBW8ED3gZqCV7ZArr%2bhQrcFkIYkOUxQvVHf8%2b8FlwaPPZiKjc1ag%3d%3d&game_biz=hk4e_cn"
-
+//            https://user.mihoyo.com/?im_out=false&sign_type=2&auth_appid=im_ccs&authkey_ver=1&win_direction=portrait&lang=zh-cn&device_type=mobile&ext=%7b%22loc%22%3a%7b%22x%22%3a2254.6728515625%2c%22y%22%3a217.0330810546875%2c%22z%22%3a-892.0397338867188%7d%2c%22platform%22%3a%22Android%22%7d&game_version=CNRELAndroid2.2.0_R4705718_S4715326_D4715326&plat_type=android&authkey=q8bArSDThcOuxT63SoBg4OKpI4olTpruzulc4I%2bhOVGopxW%2f75x6Bax9s8IeWyj9L1BmgY5aaYfIHHAmWDDYWnOhA6BgtaQqNo4FM7RC7xXjPXxXLO7uvxBGnPKGtG1s2ZdzX89MWMwu%2bAKmTR7Y9kRhxTppnZk5z7BewGlt%2f611a3itB8kYTIm9fahDnwbi3D2NEKQ3OuZJMp69GddZheYug%2fZmUNq1%2fQpLSXZmx1z8R01tQp7H2W3Qt0mQN%2fEMYRkjX4FbsifGyR46Wd4evbJDvFGMnh%2f0Dd%2f%2b%2b3b%2fdFTN1TM%2fAXZQWcVyTTPHVFRUMef6E4MfK3VfXgy0p8Bz7sJUBVKSvZgxqK8P3ejqmR8BNtBdkt1FZt0RpZ2q%2blU6P3vPvpvYepM5yb7w0zz5t4eNg3O%2b1RvJQAF2RjF2gSirvecUHKDK7gnfA6qYj7DkX0DojUa9w7TY%2bydz1ZxocuQLmr12rNNLdoLiXQucStVP1jAGFlpS6rcNrkZN0mgu%2bau6CugdguVJWLt54HAgpwHuvoDlCXXofCjulR7lB5VGNf%2b0u06riWIlyfoBPWM52Qz0ntYJ10dOP%2bzNBoAf%2buxDVciBrmZhzZlRN8i9IR%2bp%2bkafuHL7ugviBehiLgEEqskckbuEISo%2f3xUWqIYZccKsuRZa8ln6xH%2bZanyn3RmjFOyFFoUHwoE0BlRAEDLDE8X5OzbbyYNwi9bZXcwgnKHs4R2txTxL8%2bGeuwxranmE9SUD1uDdqCfAq%2bpke3jXSP26BJHIPmHgD01xv0c9af9A8eJ6rczGwRcTLPAbBhG73h4C3HIBySgyO91qNcATuPYAbcgz1MyaYuVet%2f6FRmcaN2oTwqffH%2blCQxr8RDRcNam0gm1Pe5kqabJpS2uaRU3mzoRRFjwlpS5phXoBtOGOYNUbuvi7GqmEs1kzpbrWcc6hecAeyeiVbQuvX4aqEOUoK5ZoFPRul46ZeCTQFzMimrGXBzPLOLNrGiVZJyCHfLmDN%2fqBkR2bWJdpkfeks5kEN96xm0kLKujCEhzoLi0Qr9X15YXooSDOXfnrLUZWDgqV1p59JKyw6XKDfgWMJbCSAB8nnnWCCrmAGt0%2bQvFLrb5DD4uwv9YJWLU1hkB7wpXjjkG8rd04Rtu87naGj%2fcitdytY%2blze2OHssa%2bQcLGKEJaC9%2f3KFe6PBTIAH6szaK%2fsOKcNf4fztXA4ZAPNbhYon6SX3acueTpzftCGT2E7dGo%2b1OFdKdw2XCNJnF7c55BaUDBEicJj7ikv0oFdHq1NQOjo9PByRDsX2W1S64EPzNAaoQOq6tgAHRZyl9ja9uOOZ9WbHqLuYfrmhVJ3a3hmEruqgFuwmleVRP67w%3d%3d&game_biz=hk4e_cn#/login/captcha
         val realUrl = "https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog"
 
-        return "${realUrl}?${authkey}&gacha_type=${type}&page=${page}&size=${size}&end_id=${endId}";
+//        return "${realUrl}?${authkey}&gacha_type=${type}&page=${page}&size=${size}&end_id=${endId}"
+        return "${realUrl}?${UrlUtils.params2String(realParams)}"
     }
 }
