@@ -92,7 +92,17 @@ class LotteryAnalysisActivity : BaseActivity() {
                         entity.getStars5Arms(),
                         entity.getStars5Role()
                     ),
-                    entity.getSize(), item == "301" || item == "302"
+                    entity.getSize(),
+                    when (item) {
+                        "all" -> {
+                            model.dataArmsEntity.getLastStars5Index() +
+                                    model.dataUpEntity.getLastStars5Index() +
+                                    model.dataNoviceEntity.getLastStars5Index() +
+                                    model.dataPermanentEntity.getLastStars5Index()
+                        }
+                        else -> entity.getLastStars5Index()
+                    },
+                    item == "301" || item == "302"
                 )
 
                 setBaseText(tvBase, entity)
@@ -163,6 +173,7 @@ class LotteryAnalysisActivity : BaseActivity() {
                 tvStars5: TextView,
                 starsNum: IntArray,
                 dataSize: Int,
+                lastStars5Index: Int,
                 isUp: Boolean = false
             ) {
                 val stars4Str = "4星${starsNum[0]}次(${
@@ -177,7 +188,12 @@ class LotteryAnalysisActivity : BaseActivity() {
                         starsNum[3],
                         dataSize
                     )
-                })" + "\n - 平均1/${BigDecimalUtil.divide(dataSize, starsNum[3])}抽" +
+                })" + "\n - 平均1/${
+                    BigDecimalUtil.divide(
+                        dataSize - lastStars5Index,
+                        starsNum[3]
+                    )
+                }抽(忽略本轮抽卡)" +
                         if (isUp) ""
                         else "\n - 角色：${starsNum[5]}次，武器：${starsNum[4]}次"
 
