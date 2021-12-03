@@ -2,6 +2,8 @@ package cn.yooking.genshin.view.presenter
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
@@ -60,142 +62,144 @@ class MainPresenter(val context: MainActivity) {
             dialog = createDialog(context, "正在导入数据")
         }
 
-        OkhttpUtil.instance.get(url, object : StringCallback() {
-            override fun onStart() {
-                context.runOnUiThread {
-                    if (dialog != null) {
-                        if (isFirstClient) {
-                            dialog!!.show()
-                        }
-                        when (type) {
-                            "100" -> {
-                                dialog!!.setMessage("正在读取新手卡池数据(${page})")
+        Handler(Looper.getMainLooper()).postDelayed({
+            OkhttpUtil.instance.get(url, object : StringCallback() {
+                override fun onStart() {
+                    context.runOnUiThread {
+                        if (dialog != null) {
+                            if (isFirstClient) {
+                                dialog!!.show()
                             }
-                            "200" -> {
-                                dialog!!.setMessage("正在读取常驻卡池数据(${page})")
-                            }
-                            "301" -> {
-                                dialog!!.setMessage("正在读取up卡池数据(${page})")
-                            }
-                            "302" -> {
-                                dialog!!.setMessage("正在读取武器卡池数据(${page})")
-                            }
-                        }
-
-                    }
-                    isFirstClient = false
-                }
-            }
-
-            override fun onResponse(code: Int, response: String) {
-                val json = JSONObject(response)
-                if (json.has("data")) {
-                    val dataJson = json.getJSONObject("data")
-                    if (dataJson.has("list")) {
-                        val listJson = dataJson.getJSONArray("list");
-
-                        val parseArray: List<Record> =
-                            JSON.parseArray(listJson.toString(), Record::class.java)
-                        when (type) {
-                            "100" -> {//新手
-                                data1.addAll(parseArray)
-                            }
-                            "200" -> {//常驻
-                                data2.addAll(parseArray)
-                            }
-                            "301" -> {//
-                                data3.addAll(parseArray)
-                            }
-                            "302" -> {
-                                data4.addAll(parseArray)
-                            }
-                        }
-
-                        if (parseArray.size == pageSize) {
-                            clientUrl(type, page + 1, parseArray[parseArray.size - 1].getId())
-                        } else {
                             when (type) {
                                 "100" -> {
-                                    clientUrl("200")
+                                    dialog!!.setMessage("正在读取新手卡池数据(${page})")
                                 }
                                 "200" -> {
-                                    clientUrl("301")
+                                    dialog!!.setMessage("正在读取常驻卡池数据(${page})")
                                 }
                                 "301" -> {
-                                    clientUrl("302")
+                                    dialog!!.setMessage("正在读取up卡池数据(${page})")
                                 }
+                                "302" -> {
+                                    dialog!!.setMessage("正在读取武器卡池数据(${page})")
+                                }
+                            }
+
+                        }
+                        isFirstClient = false
+                    }
+                }
+
+                override fun onResponse(code: Int, response: String) {
+                    val json = JSONObject(response)
+                    if (json.has("data")) {
+                        val dataJson = json.getJSONObject("data")
+                        if (dataJson.has("list")) {
+                            val listJson = dataJson.getJSONArray("list");
+
+                            val parseArray: List<Record> =
+                                JSON.parseArray(listJson.toString(), Record::class.java)
+                            when (type) {
+                                "100" -> {//新手
+                                    data1.addAll(parseArray)
+                                }
+                                "200" -> {//常驻
+                                    data2.addAll(parseArray)
+                                }
+                                "301" -> {//
+                                    data3.addAll(parseArray)
+                                }
+                                "302" -> {
+                                    data4.addAll(parseArray)
+                                }
+                            }
+
+                            if (parseArray.size == pageSize) {
+                                clientUrl(type, page + 1, parseArray[parseArray.size - 1].getId())
+                            } else {
+                                when (type) {
+                                    "100" -> {
+                                        clientUrl("200")
+                                    }
+                                    "200" -> {
+                                        clientUrl("301")
+                                    }
+                                    "301" -> {
+                                        clientUrl("302")
+                                    }
 //                                "302" -> {
 //
 //                                }
-                                else -> {
-                                    isClientEnd = true
+                                    else -> {
+                                        isClientEnd = true
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            override fun onError(code: Int, message: String) {
-                isClientEnd = true
-            }
+                override fun onError(code: Int, message: String) {
+                    isClientEnd = true
+                }
 
-            override fun onEnd() {
-                if (isClientEnd) {
-                    var saveCount = 0
-                    var repeatCount = 0
-                    val result1 = SQLiteHelper.instance.save(data1)
-                    saveCount += result1[0]
-                    repeatCount += result1[1]
+                override fun onEnd() {
+                    if (isClientEnd) {
+                        var saveCount = 0
+                        var repeatCount = 0
+                        val result1 = SQLiteHelper.instance.save(data1)
+                        saveCount += result1[0]
+                        repeatCount += result1[1]
 
-                    val result2 = SQLiteHelper.instance.save(data2)
-                    saveCount += result2[0]
-                    repeatCount += result2[1]
+                        val result2 = SQLiteHelper.instance.save(data2)
+                        saveCount += result2[0]
+                        repeatCount += result2[1]
 
-                    val result3 = SQLiteHelper.instance.save(data3)
-                    saveCount += result3[0]
-                    repeatCount += result3[1]
+                        val result3 = SQLiteHelper.instance.save(data3)
+                        saveCount += result3[0]
+                        repeatCount += result3[1]
 
-                    val result4 = SQLiteHelper.instance.save(data4)
-                    saveCount += result4[0]
-                    repeatCount += result4[1]
+                        val result4 = SQLiteHelper.instance.save(data4)
+                        saveCount += result4[0]
+                        repeatCount += result4[1]
 
-                    context.runOnUiThread {
+                        context.runOnUiThread {
 
-                        if (dialog != null)
-                            dialog!!.dismiss()
+                            if (dialog != null)
+                                dialog!!.dismiss()
 
-                        Toast.makeText(
-                            context,
-                            "本次成功导入了\n新数据：${saveCount}条\n重复数据：${repeatCount}条",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                            Toast.makeText(
+                                context,
+                                "本次成功导入了\n新数据：${saveCount}条\n重复数据：${repeatCount}条",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                    val uid = when {
-                        data1.size > 0 -> data1[0].uid
-                        data2.size > 0 -> data2[0].uid
-                        data3.size > 0 -> data3[0].uid
-                        data4.size > 0 -> data4[0].uid
-                        else -> ""
-                    }
-                    if (context.uid.isEmpty()) {
-                        context.uid = uid
-                        context.holder.setText(R.id.tv_main_user, "(uid:$uid)")
-                    }
-                    if (uid.isNotEmpty()) {
-                        val intent = Intent(context, LotteryAnalysisActivity::class.java)
-                        intent.putExtra("uid", uid)
-                        context.startActivity(intent)
+                        val uid = when {
+                            data1.size > 0 -> data1[0].uid
+                            data2.size > 0 -> data2[0].uid
+                            data3.size > 0 -> data3[0].uid
+                            data4.size > 0 -> data4[0].uid
+                            else -> ""
+                        }
+                        if (context.uid.isEmpty()) {
+                            context.uid = uid
+                            context.holder.setText(R.id.tv_main_user, "(uid:$uid)")
+                        }
+                        if (uid.isNotEmpty()) {
+                            val intent = Intent(context, LotteryAnalysisActivity::class.java)
+                            intent.putExtra("uid", uid)
+                            context.startActivity(intent)
+                        }
                     }
                 }
-            }
-        })
+            })
+        },200);
+
     }
 
     private fun getUrl(type: String, page: Int, endId: String = "0"): String {
         val recordUrl = context.holder.getText(R.id.et_dialog_url)
-
         if (recordUrl.isEmpty()) return ""
 
         val params = UrlUtils.getUrlParams(recordUrl)

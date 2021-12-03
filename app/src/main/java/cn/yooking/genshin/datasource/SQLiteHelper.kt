@@ -138,7 +138,11 @@ class SQLiteHelper {
      * @param type 抽卡类型 与gacha_type一致
      */
     fun findAllRecordCount(uid: String, type: String = ""): List<Map<String, String>> {
-        val where = "where uid=${uid} " + if (type.isNotEmpty()) "and gacha_type=${type} " else ""
+        val where =
+            if (type == "301")
+                "where uid=${uid} " + "and (gacha_type='${type}' or gacha_type='400')"
+            else
+                "where uid=${uid} " + if (type.isNotEmpty()) "and gacha_type=${type} " else ""
         val sql = "select " +
                 "*,count(*) as count " +
                 "from record " +
@@ -165,7 +169,12 @@ class SQLiteHelper {
      * @param type 抽卡类型 与gacha_type一致
      */
     fun findRecord(uid: String, type: String): List<Record> {
-        return LitePal.where("uid=${uid} and gacha_type='${type}'").order("cardId").find()
+        val where =
+            if (type == "301") {
+                "uid=${uid} and (gacha_type='${type}' or gacha_type='400')"
+            } else "uid=${uid} and gacha_type='${type}'"
+
+        return LitePal.where(where).order("cardId").find()
     }
 
     /**
@@ -188,8 +197,11 @@ class SQLiteHelper {
      * 获取最近一次5星的名称
      */
     fun findLastStars5Name(uid: String, type: String): String {
+        val where =
+            if(type == "301") "uid=${uid} and (gacha_type='${type}' or gacha_type='400') and rank_type='5'"
+            else "uid=${uid} and gacha_type='${type}' and rank_type='5'"
         val lastRecord: Record = LitePal
-            .where("uid=${uid} and gacha_type='${type}' and rank_type='5'")
+            .where(where)
             .order("cardId")
             .findLast() ?: return ""
         return lastRecord.name
