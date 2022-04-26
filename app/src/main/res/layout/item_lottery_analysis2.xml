@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/dp_5">
@@ -13,15 +13,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/dp_5">
+
         <ImageView
             android:id="@+id/iv_lottery_analysis2_item_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:maxWidth="120px"
             android:maxHeight="120px"
             android:scaleType="centerInside"
-            android:adjustViewBounds="true"
             android:src="@mipmap/icon_head_linghua" />
+
+        <ImageView
+            android:id="@+id/iv_lottery_analysis2_item_type"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
+            android:layout_margin="@dimen/dp_2"
+            android:layout_gravity="end|bottom"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:src="@mipmap/icon_limit" />
     </androidx.cardview.widget.CardView>
 
 
@@ -29,11 +40,11 @@
         android:id="@+id/tv_lottery_analysis2_item_times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_666"
         android:layout_marginTop="@dimen/dp_3"
-        android:textSize="@dimen/sp_8"
-        android:singleLine="true"
         android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="@color/color_666"
+        android:textSize="@dimen/sp_8"
         tools:text="神里绫华(15)" />
 
 </LinearLayout>

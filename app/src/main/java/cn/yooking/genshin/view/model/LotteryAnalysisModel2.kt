@@ -18,8 +18,6 @@ class LotteryAnalysisModel2(val uid: String) {
     val armsData: InfoEntity = InfoEntity(uid, "302")
     val permanentData: InfoEntity = InfoEntity(uid, "200")
 
-    val permanentArray = arrayOf("迪卢克","","")
-
     init {
 
         // 统计五星次数

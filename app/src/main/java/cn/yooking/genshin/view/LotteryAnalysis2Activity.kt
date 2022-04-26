@@ -122,8 +122,17 @@ class LotteryAnalysis2Activity : BaseActivity() {
     }
 }
 
-class MyAdapter :
+class MyAdapter() :
     BaseQuickAdapter<LotteryAnalysisModel2.DataEntity, BaseViewHolder>(R.layout.item_lottery_analysis2) {
+
+    val permanentArray = arrayOf(
+        "刻晴","莫娜","七七","迪卢克", "琴",//角色
+        //武器
+        "阿莫斯之弓","天空之翼","四风原典",
+        "天空之卷","和璞鸢","天空之脊",
+        "狼的末路", "天空之傲","天空之刃","风鹰剑"
+    )
+
     override fun convert(holder: BaseViewHolder, item: LotteryAnalysisModel2.DataEntity) {
 
         val ivHeader = holder.getView<ImageView>(R.id.iv_lottery_analysis2_item_header)
@@ -141,5 +150,8 @@ class MyAdapter :
                 if (headerEntity.nickname.isEmpty()) headerEntity.name else headerEntity.nickname
             holder.setText(R.id.tv_lottery_analysis2_item_times, "${name}(${item.distanceCount})")
         }
+
+        holder.setGone(R.id.iv_lottery_analysis2_item_type,permanentArray.contains(item.name))
     }
 }
+
