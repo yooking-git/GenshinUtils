@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_dialog_header_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:hint="请输入角色名称"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_20"
+        android:singleLine="true"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="@dimen/dp_28"
+        android:layout_marginEnd="@dimen/dp_28"
+        android:background="@color/color_999" />
+
+    <EditText
+        android:id="@+id/et_dialog_header_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_1"
+        android:background="@color/color_white"
+        android:hint="请输入角色昵称(可不填)"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_20"
+        android:singleLine="true"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="@dimen/dp_28"
+        android:layout_marginEnd="@dimen/dp_28"
+        android:background="@color/color_999" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_3"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/rb_dialog_header_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_333"
+            android:text="角色" />
+
+        <RadioButton
+            android:id="@+id/rb_dialog_header_arms"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_333"
+            android:text="武器" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_3"
+        android:text="* 点击确定后将打开图库"
+        android:textColor="@color/color_notice"
+        android:textSize="@dimen/sp_13" />
+</LinearLayout>

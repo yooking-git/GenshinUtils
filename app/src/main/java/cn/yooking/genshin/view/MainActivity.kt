@@ -14,6 +14,7 @@ import cn.yooking.genshin.datasource.SQLiteHelper
 import cn.yooking.genshin.utils.NoMultipleItemClickListener
 import cn.yooking.genshin.utils.UrlUtils
 import cn.yooking.genshin.utils.dialog.*
+import cn.yooking.genshin.utils.sp.HeaderSpUtil
 import cn.yooking.genshin.view.presenter.MainPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -40,7 +41,9 @@ class MainActivity : BaseActivity() {
         data.add(mapOf("title" to "用户管理", "tag" to "user"))
         data.add(mapOf("title" to "导入新的抽卡记录", "tag" to "net"))
         data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis"))
+        data.add(mapOf("title" to "抽卡记录分析2", "tag" to "analysis2"))
         data.add(mapOf("title" to "抽卡记录统计", "tag" to "result"))
+        data.add(mapOf("title" to "头像管理", "tag" to "header"))
         data.add(mapOf("title" to "本地化导入/导出", "tag" to "local"))
         data.add(mapOf("title" to "关于", "tag" to "about"))
     }
@@ -138,6 +141,22 @@ class MainActivity : BaseActivity() {
                                 ).show()
                             }
                         }
+                        "analysis2" -> {
+                            if (uid.isNotEmpty()) {
+                                val intent = Intent(
+                                    this@MainActivity,
+                                    LotteryAnalysis2Activity::class.java
+                                )
+                                intent.putExtra("uid", uid)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "暂无用户数据，请先选择用户",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                         "user" -> {
                             val intent = Intent(
                                 this@MainActivity,
@@ -172,6 +191,13 @@ class MainActivity : BaseActivity() {
                             val intent = Intent(
                                 this@MainActivity,
                                 AboutActivity::class.java
+                            )
+                            startActivity(intent)
+                        }
+                        "header" -> {
+                            val intent = Intent(
+                                this@MainActivity,
+                                HeaderManagerActivity::class.java
                             )
                             startActivity(intent)
                         }

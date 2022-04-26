@@ -33,7 +33,7 @@ class DataStorageActivity : BaseActivity() {
 
     override fun initView() {
 
-        val filePath = FileUtil.getFileDirsUrl(this)
+        val filePath = FileUtil.getFileDirsPath(this)
         val hintStart = "数据存储路径:"
         val hintEnd = "/storage/emulated/0一般在[文件管理器]中命名为[手机存储]"
         val hintStr = "$hintStart\n$filePath\n$hintEnd"

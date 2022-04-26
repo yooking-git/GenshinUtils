@@ -14,19 +14,19 @@ class FileUtil {
          * 获取文件夹路径
          * @see getFileDirs
          */
-        fun getFileDirsUrl(context: Context): String {
+        fun getFileDirsPath(context: Context): String {
             return getFileDirs(context)?.absolutePath + File.separator
         }
 
         /**
          * 将[json]数据存储到[fileName]文件中
-         * @see getFileDirsUrl 文件夹路径
+         * @see getFileDirsPath 文件夹路径
          * @see createFile 创建文件
          * @see writeFile 写入数据
          */
         fun saveAsJson(context: Context, fileName: String, json: String) {
             val filePath =
-                getFileDirsUrl(context) + fileName
+                getFileDirsPath(context) + fileName
 
             val file = File(filePath)
             createFile(file)
@@ -35,12 +35,12 @@ class FileUtil {
 
         /**
          * 读取文件名为[fileName]的文件 -> String内容
-         * @see getFileDirsUrl 文件夹路径
+         * @see getFileDirsPath 文件夹路径
          * @see readFile 读取文件
          */
         fun readJson(context: Context, fileName: String): String {
             val filePath =
-                getFileDirsUrl(context) + fileName
+                getFileDirsPath(context) + fileName
             val file = File(filePath)
             return readFile(file)
         }
@@ -50,7 +50,7 @@ class FileUtil {
          * @param fileName 文件名
          */
         fun delete(context: Context, fileName: String): Boolean {
-            val filePath = getFileDirsUrl(context) + fileName
+            val filePath = getFileDirsPath(context) + fileName
             val file = File(filePath)
             return file.delete()
         }

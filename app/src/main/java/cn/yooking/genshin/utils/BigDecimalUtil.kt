@@ -17,11 +17,22 @@ class BigDecimalUtil {
             return "${b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).toDouble()}%"
         }
 
-        fun divide(numerator: Int, denominator: Int):String{
+        fun divide(numerator: Int, denominator: Int): String {
             if (denominator == 0) return "0"
             val b1 = BigDecimal(numerator)
             val b2 = BigDecimal(denominator)
             return "${b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).toDouble()}"
+        }
+
+        fun add(vararg nums: String): Int {
+            if (nums.isEmpty()) return 0
+            if (nums.size < 2) return BigDecimal(nums[0]).toInt()
+
+            var b0 = BigDecimal("0")
+            nums.forEach {
+                b0 = b0.add(BigDecimal(it))
+            }
+            return b0.toInt()
         }
     }
 }

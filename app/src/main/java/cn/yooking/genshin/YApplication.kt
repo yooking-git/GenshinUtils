@@ -1,6 +1,8 @@
 package cn.yooking.genshin
 
 import android.app.Application
+import cn.yooking.genshin.utils.sp.HeaderSpUtil
+import cn.yooking.genshin.utils.sp.SPUtil
 import org.litepal.LitePal
 
 /**
@@ -13,5 +15,8 @@ class YApplication : Application() {
         super.onCreate()
 
         LitePal.initialize(this)
+
+        HeaderSpUtil.instance.init(this)
+        SPUtil.instance.init(this)
     }
 }
