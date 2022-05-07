@@ -94,14 +94,15 @@ class LotteryAnalysisModel2(val uid: String) {
             var last5StartsIndex = 0
             recordData.forEachIndexed { index, record ->
                 if (record.rank_type == "5") {
-                    legendData.add(DataEntity(record.name, index - last5StartsIndex))
-                    last5StartsIndex = index
+                    val i = index + 1
+                    legendData.add(DataEntity(record.name, i - last5StartsIndex))
+                    last5StartsIndex = i
                     ++starts5Times
                 }
             }
 
             this.awardTimes = "$awardTimes"
-            this.withoutTimes = "${awardTimes - last5StartsIndex - 1}"
+            this.withoutTimes = "${awardTimes - last5StartsIndex}"
             this.starts5Times = "$starts5Times"
             this.averageTimes = BigDecimalUtil.divide(awardTimes, starts5Times)
 
