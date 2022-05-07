@@ -1,5 +1,6 @@
 package cn.yooking.genshin.view.model
 
+import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
 import cn.yooking.genshin.utils.BigDecimalUtil
 
@@ -10,6 +11,7 @@ import cn.yooking.genshin.utils.BigDecimalUtil
 class LotteryAnalysisModel2(val uid: String) {
 
     val fortune: String //运势
+    val fortuneColor: Int //运势
     val starts5Times: String //出5星次数
     val averageTimes: String //平均5星次数
     val awardTimes: String //总抽卡次数
@@ -39,13 +41,30 @@ class LotteryAnalysisModel2(val uid: String) {
         this.averageTimes = BigDecimalUtil.divide(awardTimes, starts5Times)
 
         val d = BigDecimalUtil.divide(awardTimes, starts5Times).toDouble()
-        this.fortune = when {
-            d > 70 -> "非"
-            d > 65 -> "凶"
-            d > 60 -> "平"
-            d > 55 -> "吉"
-            d > 30 -> "欧"
+
+        this.fortune = getFortuneText(d)
+        this.fortuneColor = getFortuneColor(d)
+    }
+
+    fun getFortuneText(fortune: Double): String {
+        return when {
+            fortune > 70 -> "非"
+            fortune > 65 -> "衰"
+            fortune > 60 -> "平"
+            fortune > 55 -> "吉"
+            fortune > 30 -> "欧"
             else -> "神"
+        }
+    }
+
+    fun getFortuneColor(fortune: Double): Int {
+        return when {
+            fortune > 70 -> R.color.color_fortune_5
+            fortune > 65 -> R.color.color_fortune_4
+            fortune > 60 -> R.color.color_fortune_3
+            fortune > 55 -> R.color.color_fortune_2
+            fortune > 30 -> R.color.color_fortune_1
+            else -> R.color.color_fortune_0
         }
     }
 
@@ -54,11 +73,12 @@ class LotteryAnalysisModel2(val uid: String) {
         val distanceCount: Int,
     )
 
-    class InfoEntity(
+    inner class InfoEntity(
         uid: String,//用户ID
         type: String,//抽卡类型
     ) {
         val fortune: String //运势
+        val fortuneColor: Int //运势颜色
         val withoutTimes: String //未出5星次数
         val starts5Times: String //出5星次数
         val averageTimes: String //平均5星次数
@@ -86,14 +106,8 @@ class LotteryAnalysisModel2(val uid: String) {
             this.averageTimes = BigDecimalUtil.divide(awardTimes, starts5Times)
 
             val d = BigDecimalUtil.divide(awardTimes, starts5Times).toDouble()
-            this.fortune = when {
-                d > 70 -> "非"
-                d > 65 -> "凶"
-                d > 60 -> "平"
-                d > 55 -> "吉"
-                d > 30 -> "欧"
-                else -> "神"
-            }
+            this.fortune = getFortuneText(d)
+            this.fortuneColor = getFortuneColor(d)
         }
     }
 }

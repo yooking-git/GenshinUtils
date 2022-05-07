@@ -46,7 +46,7 @@
                 android:layout_marginTop="@dimen/dp_3"
                 android:layout_marginEnd="@dimen/dp_1"
                 android:text="限"
-                android:textColor="#f4ea2a"
+                android:textColor="@color/color_fortune_1"
                 android:textSize="@dimen/sp_6" />
         </FrameLayout>
 

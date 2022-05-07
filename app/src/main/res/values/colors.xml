@@ -15,4 +15,11 @@
     <color name="color_stars5">#FF9224</color>
     <color name="color_stars4">#4B0091</color>
     <color name="color_stars3">#9D9D9D</color>
+
+    <color name="color_fortune_5">#082E54</color>
+    <color name="color_fortune_4">#87CEEB</color>
+    <color name="color_fortune_3">#40E0D0</color>
+    <color name="color_fortune_2">#F0E68C</color>
+    <color name="color_fortune_1">#F4EA2A</color>
+    <color name="color_fortune_0">#E3170D</color>
 </resources>

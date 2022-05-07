@@ -2,6 +2,7 @@ package cn.yooking.genshin.view
 
 import android.net.Uri
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.yooking.genshin.BaseActivity
@@ -37,12 +38,14 @@ class LotteryAnalysis2Activity : BaseActivity() {
         // 总计
         holder.setText(R.id.tv_lottery_analysis2_uid, model.uid)
         holder.setText(R.id.tv_lottery_analysis2_total_fortune, model.fortune)
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_total_fortune).setTextColor(resources.getColor(model.fortuneColor,theme))
         holder.setText(R.id.tv_lottery_analysis2_total_starts5_per, model.averageTimes)
         holder.setText(R.id.tv_lottery_analysis2_total_times, model.awardTimes)
         holder.setText(R.id.tv_lottery_analysis2_total_starts5, model.starts5Times)
 
         // 角色抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_up_fortune, model.upData.fortune)
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_up_fortune).setTextColor(resources.getColor(model.upData.fortuneColor,theme))
         holder.setText(
             R.id.tv_lottery_analysis2_up_without_times,
             "已${model.upData.withoutTimes}抽未出金"
@@ -59,6 +62,7 @@ class LotteryAnalysis2Activity : BaseActivity() {
 
         // 武器抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_arms_fortune, model.armsData.fortune)
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_arms_fortune).setTextColor(resources.getColor(model.armsData.fortuneColor,theme))
         holder.setText(
             R.id.tv_lottery_analysis2_arms_without_times,
             "已${model.armsData.withoutTimes}抽未出金"
@@ -74,6 +78,7 @@ class LotteryAnalysis2Activity : BaseActivity() {
 
         // 常驻抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_permanent_fortune, model.permanentData.fortune)
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_permanent_fortune).setTextColor(resources.getColor(model.permanentData.fortuneColor,theme))
         holder.setText(
             R.id.tv_lottery_analysis2_permanent_without_times,
             "已${model.permanentData.withoutTimes}抽未出金"
@@ -122,10 +127,10 @@ class LotteryAnalysis2Activity : BaseActivity() {
     }
 }
 
-class MyAdapter() :
+class MyAdapter :
     BaseQuickAdapter<LotteryAnalysisModel2.DataEntity, BaseViewHolder>(R.layout.item_lottery_analysis2) {
 
-    val permanentArray = arrayOf(
+    private val permanentArray = arrayOf(
         "刻晴","莫娜","七七","迪卢克", "琴",//角色
         //武器
         "阿莫斯之弓","天空之翼","四风原典",
