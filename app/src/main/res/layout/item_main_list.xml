@@ -19,7 +19,7 @@
         android:layout_height="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
-        android:src="@mipmap/icon_paimeng120" />
+        android:src="@mipmap/icon_item" />
 
     <TextView
         android:id="@+id/tv_main_item_title"

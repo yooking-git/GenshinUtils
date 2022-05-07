@@ -151,7 +151,7 @@ class MyAdapter() :
             holder.setText(R.id.tv_lottery_analysis2_item_times, "${name}(${item.distanceCount})")
         }
 
-        holder.setGone(R.id.iv_lottery_analysis2_item_type,permanentArray.contains(item.name))
+        holder.setGone(R.id.fl_lottery_analysis2_item_type,permanentArray.contains(item.name))
     }
 }
 

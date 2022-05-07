@@ -10,8 +10,8 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
         app:cardCornerRadius="@dimen/dp_5">
 
         <ImageView
@@ -19,20 +19,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxWidth="120px"
-            android:maxHeight="120px"
             android:scaleType="centerInside"
-            android:src="@mipmap/icon_head_linghua" />
+            android:src="@mipmap/icon_paimeng" />
 
-        <ImageView
-            android:id="@+id/iv_lottery_analysis2_item_type"
-            android:layout_width="@dimen/dp_10"
-            android:layout_height="@dimen/dp_10"
-            android:layout_margin="@dimen/dp_2"
+        <FrameLayout
+            android:id="@+id/fl_lottery_analysis2_item_type"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
             android:layout_gravity="end|bottom"
-            tools:visibility="visible"
             android:visibility="gone"
-            android:src="@mipmap/icon_limit" />
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="-3dp"
+                android:layout_marginBottom="-3dp"
+                android:src="@mipmap/icon_triangle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_marginTop="@dimen/dp_3"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:text="限"
+                android:textColor="#f4ea2a"
+                android:textSize="@dimen/sp_6" />
+        </FrameLayout>
+
+
     </androidx.cardview.widget.CardView>
 
 
