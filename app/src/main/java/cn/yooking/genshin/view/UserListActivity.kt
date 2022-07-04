@@ -135,7 +135,7 @@ class UserListActivity : BaseActivity() {
                     R.id.tv_user_analysis -> {
                         val intent = Intent(
                             this@UserListActivity,
-                            LotteryAnalysisActivity::class.java
+                            LotteryAnalysis2Activity::class.java
                         )
                         intent.putExtra("uid", uid)
                         startActivity(intent)

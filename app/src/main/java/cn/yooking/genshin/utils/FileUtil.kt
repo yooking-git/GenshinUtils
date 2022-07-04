@@ -127,6 +127,28 @@ class FileUtil {
 
             return ret
         }
+
+        fun copyFile(oldPath: String, newPath: String) {
+            val oldFile = File(oldPath)
+            if (!oldFile.exists() || !oldFile.isFile || !oldFile.canRead()) return
+            val newFile = File(newPath)
+            if (!newFile.exists()) {
+                newFile.parentFile!!.mkdirs()
+                newFile.createNewFile()
+            }
+
+            val fileInputStream = FileInputStream(oldPath)
+            val fileOutputStream = FileOutputStream(newPath)
+
+            val buffer = ByteArray(1024)
+            var byteRead: Int
+            while (-1 != (fileInputStream.read(buffer).also { byteRead = it })) {
+                fileOutputStream.write(buffer, 0, byteRead)
+            }
+            fileInputStream.close()
+            fileOutputStream.flush()
+            fileOutputStream.close()
+        }
     }
 
 

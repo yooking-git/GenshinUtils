@@ -37,6 +37,16 @@ class HeaderSpUtil {
         edit.apply()
     }
 
+    fun removeAll(){
+        val sp = getSharedPreference()
+        val edit = sp.edit()
+        val spAll = sp.all
+        spAll.forEach{
+            edit.remove(it.key)
+        }
+        edit.apply()
+    }
+
     fun getHeader(name: String): String {
         return getSharedPreference().getString(name, "") ?: ""
     }

@@ -1,7 +1,5 @@
 package cn.yooking.genshin.view
 
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +24,7 @@ class RecordActivity : BaseActivity() {
     var uid: String = ""
     var user: User? = null
 
-    val adapter =
+    private val adapter =
         object :
             BaseQuickAdapter<Map<String, String>, BaseViewHolder>(R.layout.item_record_list) {
             override fun convert(holder: BaseViewHolder, item: Map<String, String>) {

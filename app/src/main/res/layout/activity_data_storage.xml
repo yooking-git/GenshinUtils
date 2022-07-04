@@ -54,4 +54,26 @@
         android:text="数据仅支持JSON格式，内容应与抽卡记录界面返回一致\n卸载App时请及时备份导出的数据"
         android:textColor="@color/color_666"
         android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_data_storage_header_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20"
+        android:text="导出头像数据"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_data_storage_header_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/color_white"
+        android:padding="@dimen/dp_20"
+        android:text="导入头像数据"
+        android:textColor="@color/color_333"
+        android:textSize="@dimen/sp_15" />
 </LinearLayout>

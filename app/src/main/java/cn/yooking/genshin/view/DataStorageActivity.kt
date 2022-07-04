@@ -13,7 +13,9 @@ import cn.yooking.genshin.datasource.data.Record
 import cn.yooking.genshin.utils.DateUtil
 import cn.yooking.genshin.utils.FileUtil
 import cn.yooking.genshin.utils.dialog.*
+import cn.yooking.genshin.utils.sp.HeaderSpUtil
 import com.alibaba.fastjson.JSON
+import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -32,7 +34,6 @@ class DataStorageActivity : BaseActivity() {
     }
 
     override fun initView() {
-
         val filePath = FileUtil.getFileDirsPath(this)
         val hintStart = "数据存储路径:"
         val hintEnd = "/storage/emulated/0一般在[文件管理器]中命名为[手机存储]"
@@ -95,6 +96,22 @@ class DataStorageActivity : BaseActivity() {
                             delete(fileName)
                         }
                     })
+                }
+            }
+        }
+
+        holder.setOnClickListener(
+            R.id.tv_data_storage_header_export,
+            R.id.tv_data_storage_header_import
+        ) {
+            when (it.id) {
+                R.id.tv_data_storage_header_export -> {
+                    // 2022/7/4 读取sp数据
+                    exportHeader()
+                }
+                R.id.tv_data_storage_header_import -> {
+                    // 2022/7/4 读取json数据
+                    importHeader()
                 }
             }
         }
@@ -173,6 +190,59 @@ class DataStorageActivity : BaseActivity() {
                     ).show()
                 }
             }
+        }
+    }
+
+    private fun exportHeader() {
+        val fileDirsPath = "${FileUtil.getFileDirsPath(this)}/header/"
+        File(fileDirsPath).deleteRecursively()
+
+        val findAllHeader = HeaderSpUtil.instance.findAllHeader()
+        if (findAllHeader.size == 0) {
+            Toast.makeText(this, "未找到头像数据", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        findAllHeader.forEach { header ->
+            val file = File(header.path)
+            FileUtil.copyFile(
+                file.path,
+                "${FileUtil.getFileDirsPath(this)}/header/${file.name}"
+            )
+        }
+
+        val json = JSON.toJSONString(findAllHeader)
+        FileUtil.saveAsJson(this, "header.json", json)
+
+        Toast.makeText(this, "头像导出成功", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun importHeader() {
+        val json = FileUtil.readJson(this, "header.json")
+        val headerDirPath = "${FileUtil.getFileDirsPath(this)}/header"
+        val fileDir = File(headerDirPath)
+        if(!fileDir.exists()){
+            Toast.makeText(this, "头像库{header文件夹}不存在", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (json.isNotEmpty()) {
+            HeaderSpUtil.instance.removeAll()
+
+            val data = mutableListOf<HeaderSpUtil.HeaderEntity>()
+            data.addAll(JSON.parseArray(json, HeaderSpUtil.HeaderEntity::class.java))
+
+            data.forEach { header ->
+                HeaderSpUtil.instance.addHeader(header.name, header)
+
+                val file = File(header.path)
+                FileUtil.copyFile(
+                    "$headerDirPath/${file.name}",
+                    file.path
+                )
+            }
+            Toast.makeText(this, "头像导入成功", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this, "头像表{json文件}不存在", Toast.LENGTH_SHORT).show()
         }
     }
 

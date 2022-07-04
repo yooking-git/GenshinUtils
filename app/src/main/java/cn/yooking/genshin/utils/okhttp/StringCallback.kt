@@ -17,6 +17,7 @@ abstract class StringCallback : Callback {
 
     override fun onFailure(call: Call, e: IOException) {
         onError(-1, "IO异常:${e.message}")
+        onEnd()
     }
 
     override fun onResponse(call: Call, response: Response) {

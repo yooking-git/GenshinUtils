@@ -40,8 +40,8 @@ class MainActivity : BaseActivity() {
     override fun initData() {
         data.add(mapOf("title" to "用户管理", "tag" to "user"))
         data.add(mapOf("title" to "导入新的抽卡记录", "tag" to "net"))
-        data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis"))
-        data.add(mapOf("title" to "抽卡记录分析2", "tag" to "analysis2"))
+//        data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis"))
+        data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis2"))
         data.add(mapOf("title" to "抽卡记录统计", "tag" to "result"))
         data.add(mapOf("title" to "头像管理", "tag" to "header"))
         data.add(mapOf("title" to "本地化导入/导出", "tag" to "local"))

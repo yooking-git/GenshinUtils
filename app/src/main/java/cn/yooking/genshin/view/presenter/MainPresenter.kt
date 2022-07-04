@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
@@ -14,7 +12,7 @@ import cn.yooking.genshin.utils.UrlUtils
 import cn.yooking.genshin.utils.dialog.createDialog
 import cn.yooking.genshin.utils.okhttp.OkhttpUtil
 import cn.yooking.genshin.utils.okhttp.StringCallback
-import cn.yooking.genshin.view.LotteryAnalysisActivity
+import cn.yooking.genshin.view.LotteryAnalysis2Activity
 import cn.yooking.genshin.view.MainActivity
 import com.alibaba.fastjson.JSON
 import org.json.JSONObject
@@ -187,7 +185,7 @@ class MainPresenter(val context: MainActivity) {
                             context.holder.setText(R.id.tv_main_user, "(uid:$uid)")
                         }
                         if (uid.isNotEmpty()) {
-                            val intent = Intent(context, LotteryAnalysisActivity::class.java)
+                            val intent = Intent(context, LotteryAnalysis2Activity::class.java)
                             intent.putExtra("uid", uid)
                             context.startActivity(intent)
                         }

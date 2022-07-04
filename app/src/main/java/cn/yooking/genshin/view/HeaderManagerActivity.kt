@@ -79,7 +79,7 @@ class HeaderManagerActivity : BaseActivity() {
                 return@setOnItemClickListener
             }
 
-            buildDialog("修改头像", name = item.name, nickname = item.nickname,type = item.type)
+            buildDialog("修改头像", name = item.name, nickname = item.nickname, type = item.type)
         }
     }
 
@@ -112,9 +112,9 @@ class HeaderManagerActivity : BaseActivity() {
         val rbRole = view.findViewById<RadioButton>(R.id.rb_dialog_header_role)
         val rbArms = view.findViewById<RadioButton>(R.id.rb_dialog_header_arms)
 
-        if(type == 1){
+        if (type == 1) {
             rbArms.isChecked = true
-        }else{
+        } else {
             rbRole.isChecked = true
         }
 
@@ -140,7 +140,7 @@ class HeaderManagerActivity : BaseActivity() {
             }
             .addListener(TAG_CENTER, "取消")
 
-        if (type == 0) {
+        if (type != -1) {
             dialog.addListener(TAG_LEFT, "删除") { _, _ ->
                 HeaderSpUtil.instance.removeHeader(name)
 

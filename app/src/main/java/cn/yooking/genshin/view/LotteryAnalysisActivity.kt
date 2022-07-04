@@ -22,6 +22,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  * Created by yooking on 2021/9/27.
  * Copyright (c) 2021 yooking. All rights reserved.
  */
+@Deprecated("It is recommended to use the new version", ReplaceWith("LotteryAnalysis2Activity"),DeprecationLevel.WARNING)
 class LotteryAnalysisActivity : BaseActivity() {
 
     private val model = LotteryAnalysisModel()
