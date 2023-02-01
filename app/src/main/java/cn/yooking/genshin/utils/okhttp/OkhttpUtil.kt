@@ -58,4 +58,8 @@ class OkhttpUtil {
             callback.onEnd()
         }
     }
+
+    fun client():OkHttpClient{
+        return okHttpClient
+    }
 }

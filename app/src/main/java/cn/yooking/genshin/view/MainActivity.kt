@@ -40,6 +40,7 @@ class MainActivity : BaseActivity() {
     override fun initData() {
         data.add(mapOf("title" to "用户管理", "tag" to "user"))
         data.add(mapOf("title" to "导入新的抽卡记录", "tag" to "net"))
+        data.add(mapOf("title" to "米游社登录", "tag" to "mihoyo"))
 //        data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis"))
         data.add(mapOf("title" to "抽卡记录分析", "tag" to "analysis2"))
         data.add(mapOf("title" to "抽卡记录统计", "tag" to "result"))
@@ -124,6 +125,14 @@ class MainActivity : BaseActivity() {
                                 presenter.clientUrl()
                             }.addListener(TAG_CENTER, "取消")
                             dialog.show()
+                        }
+                        "mihoyo" -> {
+                            startActivity(
+                                Intent(
+                                    this@MainActivity,
+                                    MihoyoWebActivity::class.java
+                                )
+                            )
                         }
                         "analysis" -> {
                             if (uid.isNotEmpty()) {
