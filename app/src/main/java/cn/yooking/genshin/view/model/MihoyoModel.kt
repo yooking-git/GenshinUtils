@@ -1,5 +1,6 @@
 package cn.yooking.genshin.view.model
 
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -7,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.yooking.genshin.BaseActivity
+import cn.yooking.genshin.utils.dialog.createDialog
 import cn.yooking.genshin.utils.okhttp.OkhttpUtil
 import com.qyinter.yuanshenlink.util.Md5Util
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,6 +26,8 @@ import kotlin.math.floor
  */
 class MihoyoModel {
 
+    private var dialog: AlertDialog? = null
+
     private val TAG: String = "MihoyoModel";
 
     private var account_id = ""
@@ -35,6 +39,12 @@ class MihoyoModel {
 
     fun readAuthKey(context: BaseActivity,cookie: String) {
         thread {
+            context.runOnUiThread{
+                if(dialog == null){
+                    dialog = createDialog(context,"","正在读取数据...")
+                }
+                dialog!!.show()
+            }
             Log.i(TAG, "cookie=>${cookie}")
 
             loginByCookie(cookie)
@@ -47,8 +57,13 @@ class MihoyoModel {
             manager.setPrimaryClip(newPlainText)
             context.runOnUiThread{
                 Toast.makeText(context, "url已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                dialog!!.dismiss()
             }
         }
+    }
+
+    private fun showDialog(context: BaseActivity){
+
     }
 
     /**

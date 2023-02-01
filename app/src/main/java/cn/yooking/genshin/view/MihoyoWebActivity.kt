@@ -34,7 +34,7 @@ class MihoyoWebActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        holder.setOnClickListener(R.id.btn_mihoyo_read){
+        holder.setOnClickListener(R.id.tv_mihoyo_read){
             val manager = CookieManager.getInstance()
             val cookie = manager.getCookie("https://user.mihoyo.com")
 
