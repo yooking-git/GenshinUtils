@@ -52,34 +52,27 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/dp_3"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/rb_dialog_header_role"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_13"
+            android:clickable="false"
+            android:text="角色"
             android:textColor="@color/color_333"
-            android:text="角色" />
+            android:textSize="@dimen/sp_13" />
 
         <RadioButton
             android:id="@+id/rb_dialog_header_arms"
-            android:layout_marginStart="@dimen/dp_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_13"
+            android:layout_marginStart="@dimen/dp_10"
+            android:clickable="false"
+            android:text="武器"
             android:textColor="@color/color_333"
-            android:text="武器" />
+            android:textSize="@dimen/sp_13" />
     </RadioGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_30"
-        android:layout_marginTop="@dimen/dp_3"
-        android:text="* 点击确定后将打开图库"
-        android:textColor="@color/color_notice"
-        android:textSize="@dimen/sp_13" />
 </LinearLayout>

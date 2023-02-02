@@ -14,8 +14,10 @@ import cn.yooking.genshin.utils.DateUtil
 import cn.yooking.genshin.utils.FileUtil
 import cn.yooking.genshin.utils.dialog.*
 import cn.yooking.genshin.utils.sp.HeaderSpUtil
+import cn.yooking.genshin.view.model.HeaderManagerModel
 import com.alibaba.fastjson.JSON
 import java.io.File
+import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -102,16 +104,29 @@ class DataStorageActivity : BaseActivity() {
 
         holder.setOnClickListener(
             R.id.tv_data_storage_header_export,
-            R.id.tv_data_storage_header_import
+            R.id.tv_data_storage_header_import_local,
+            R.id.tv_data_storage_header_import_net,
+            R.id.tv_data_storage_header_clear
         ) {
             when (it.id) {
                 R.id.tv_data_storage_header_export -> {
                     // 2022/7/4 读取sp数据
                     exportHeader()
                 }
-                R.id.tv_data_storage_header_import -> {
+                R.id.tv_data_storage_header_import_local -> {
                     // 2022/7/4 读取json数据
                     importHeader()
+                }
+                R.id.tv_data_storage_header_import_net -> {
+                    HeaderManagerModel(this).update {
+                        runOnUiThread {
+                            Toast.makeText(this, "数据加载完毕", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                R.id.tv_data_storage_header_clear -> {
+                    HeaderSpUtil.instance.removeAll()
+                    Toast.makeText(this, "头像数据已清空", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -120,22 +135,38 @@ class DataStorageActivity : BaseActivity() {
     private fun showListFileDialog(title: String, callback: FileListCallback) {
         //获取文件列表
         val nameArray = FileUtil.readFileNameList(this)
-        val showNameArray = Array(nameArray.size) { i ->
-            var name = nameArray[i]
-            if (name.contains("d")) {
-                val split = name.split("d")
-                if (split.size == 2) {
-                    val uid = split[0]
-                    val time = DateUtil.formatStr(split[1].replace(".json", ""))
-                    val user = SQLiteHelper.instance.findUser(uid)
-                    if (user != null && user.nickname.isNotEmpty()) {
-                        name = "${user.nickname}($uid)\n$time"
+        val showNameArray = mutableListOf<String>()
+        val showRealNameArray = mutableListOf<String>()
+        for (name in nameArray) {
+            var showName = ""
+            try {
+                if (name.contains("d")) {
+                    val split = name.split("d")
+                    if (split.size == 2) {
+                        val uid = split[0]
+                        val time = DateUtil.formatStr(split[1].replace(".json", ""))
+
+                        val user = SQLiteHelper.instance.findUser(uid)
+                        if (user != null) {
+                            showName = if (user.nickname.isNotEmpty()) {
+                                "${user.nickname}($uid)\n$time"
+                            } else {
+                                "${uid}\n$time"
+                            }
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            name
+
+            if (showName.isNotEmpty()) {
+                showNameArray.add(showName)
+                showRealNameArray.add(name)
+            }
         }
-        if (nameArray.isEmpty()) {
+
+        if (showNameArray.isEmpty()) {
             Toast.makeText(
                 this,
                 "路径${getExternalFilesDir("json")!!.absolutePath}下无数据",
@@ -144,11 +175,16 @@ class DataStorageActivity : BaseActivity() {
             return
         }
         var which = 0
-        val dialog = createChoiceDialog(this, title, which, showNameArray) { _, i ->
+        val dialog = createChoiceDialog(
+            this,
+            title,
+            which,
+            showNameArray.toTypedArray()
+        ) { _, i ->
             which = i
         }
         dialog.addListener(TAG_RIGHT, "确定") { _, _ ->
-            callback.selectedFile(nameArray[which])
+            callback.selectedFile(showRealNameArray[which])
         }.addListener(TAG_CENTER, "取消")
         dialog.show()
     }
@@ -221,7 +257,7 @@ class DataStorageActivity : BaseActivity() {
         val json = FileUtil.readJson(this, "header.json")
         val headerDirPath = "${FileUtil.getFileDirsPath(this)}/header"
         val fileDir = File(headerDirPath)
-        if(!fileDir.exists()){
+        if (!fileDir.exists()) {
             Toast.makeText(this, "头像库{header文件夹}不存在", Toast.LENGTH_SHORT).show()
             return
         }
@@ -241,7 +277,7 @@ class DataStorageActivity : BaseActivity() {
                 )
             }
             Toast.makeText(this, "头像导入成功", Toast.LENGTH_SHORT).show()
-        }else{
+        } else {
             Toast.makeText(this, "头像表{json文件}不存在", Toast.LENGTH_SHORT).show()
         }
     }

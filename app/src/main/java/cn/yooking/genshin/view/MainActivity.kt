@@ -2,7 +2,6 @@ package cn.yooking.genshin.view
 
 import android.content.ClipboardManager
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -12,9 +11,7 @@ import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
 import cn.yooking.genshin.datasource.SQLiteHelper
 import cn.yooking.genshin.utils.NoMultipleItemClickListener
-import cn.yooking.genshin.utils.UrlUtils
 import cn.yooking.genshin.utils.dialog.*
-import cn.yooking.genshin.utils.sp.HeaderSpUtil
 import cn.yooking.genshin.view.presenter.MainPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

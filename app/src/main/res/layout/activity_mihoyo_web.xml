@@ -9,12 +9,11 @@
         android:id="@+id/tv_mihoyo_read"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_18"
         android:gravity="center"
-        android:padding="@dimen/dp_6"
+        android:padding="@dimen/dp_10"
         android:text="复制URL到剪贴板"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_16" />
 
     <WebView
         android:id="@+id/wv_mihoyo_content"

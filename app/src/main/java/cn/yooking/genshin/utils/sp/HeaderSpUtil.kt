@@ -31,17 +31,39 @@ class HeaderSpUtil {
         edit.apply()
     }
 
+    fun changeHeaderUrl(name: String, type: Int,url: String) {
+        val headerStr = getHeader(name)
+        val header = JSON.parseObject(headerStr, HeaderEntity::class.java)?: HeaderEntity(name, url)
+        header.url = url
+        header.type = type
+        addHeader(name, header)
+    }
+
+    fun changeHeaderImg(name: String, path: String) {
+        val headerStr = getHeader(name)
+        val header = JSON.parseObject(headerStr, HeaderEntity::class.java)
+        header.path = path
+        addHeader(name, header)
+    }
+
+    fun changeHeaderNickname(name: String, nickname: String) {
+        val headerStr = getHeader(name)
+        val header = JSON.parseObject(headerStr, HeaderEntity::class.java)
+        header.nickname = nickname
+        addHeader(name, header)
+    }
+
     fun removeHeader(name: String) {
         val edit = getSharedPreference().edit()
         edit.remove(name)
         edit.apply()
     }
 
-    fun removeAll(){
+    fun removeAll() {
         val sp = getSharedPreference()
         val edit = sp.edit()
         val spAll = sp.all
-        spAll.forEach{
+        spAll.forEach {
             edit.remove(it.key)
         }
         edit.apply()
@@ -74,10 +96,11 @@ class HeaderSpUtil {
 
     data class HeaderEntity(
         var name: String,
-        var path: String,
+        var url: String,
+        var path: String = "",
         var nickname: String = "",
         var type: Int = 0 // -1是添加 0是角色 1是武器
-    ){
-        constructor():this("","")
+    ) {
+        constructor() : this("", "")
     }
 }

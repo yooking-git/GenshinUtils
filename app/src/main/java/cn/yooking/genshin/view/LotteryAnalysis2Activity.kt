@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.yooking.genshin.BaseActivity
 import cn.yooking.genshin.R
+import cn.yooking.genshin.YApplication
+import cn.yooking.genshin.utils.GlideUtil
 import cn.yooking.genshin.utils.HeaderUtil
 import cn.yooking.genshin.view.model.LotteryAnalysisModel2
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
@@ -20,9 +23,9 @@ class LotteryAnalysis2Activity : BaseActivity() {
 
     private lateinit var model: LotteryAnalysisModel2
 
-    private val upAdapter: MyAdapter = MyAdapter()
-    private val armsAdapter: MyAdapter = MyAdapter()
-    private val permanentAdapter: MyAdapter = MyAdapter()
+    private val upAdapter: MyAdapter = MyAdapter(this)
+    private val armsAdapter: MyAdapter = MyAdapter(this)
+    private val permanentAdapter: MyAdapter = MyAdapter(this)
 
     override fun initLayoutId(): Int {
         return R.layout.activity_lottery_analysis2
@@ -38,14 +41,16 @@ class LotteryAnalysis2Activity : BaseActivity() {
         // 总计
         holder.setText(R.id.tv_lottery_analysis2_uid, model.uid)
         holder.setText(R.id.tv_lottery_analysis2_total_fortune, model.fortune)
-        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_total_fortune).setTextColor(resources.getColor(model.fortuneColor,theme))
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_total_fortune)
+            .setTextColor(resources.getColor(model.fortuneColor, theme))
         holder.setText(R.id.tv_lottery_analysis2_total_starts5_per, model.averageTimes)
         holder.setText(R.id.tv_lottery_analysis2_total_times, model.awardTimes)
         holder.setText(R.id.tv_lottery_analysis2_total_starts5, model.starts5Times)
 
         // 角色抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_up_fortune, model.upData.fortune)
-        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_up_fortune).setTextColor(resources.getColor(model.upData.fortuneColor,theme))
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_up_fortune)
+            .setTextColor(resources.getColor(model.upData.fortuneColor, theme))
         holder.setText(
             R.id.tv_lottery_analysis2_up_without_times,
             "已${model.upData.withoutTimes}抽未出金"
@@ -62,7 +67,8 @@ class LotteryAnalysis2Activity : BaseActivity() {
 
         // 武器抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_arms_fortune, model.armsData.fortune)
-        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_arms_fortune).setTextColor(resources.getColor(model.armsData.fortuneColor,theme))
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_arms_fortune)
+            .setTextColor(resources.getColor(model.armsData.fortuneColor, theme))
         holder.setText(
             R.id.tv_lottery_analysis2_arms_without_times,
             "已${model.armsData.withoutTimes}抽未出金"
@@ -78,7 +84,8 @@ class LotteryAnalysis2Activity : BaseActivity() {
 
         // 常驻抽卡统计
         holder.setText(R.id.tv_lottery_analysis2_permanent_fortune, model.permanentData.fortune)
-        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_permanent_fortune).setTextColor(resources.getColor(model.permanentData.fortuneColor,theme))
+        holder.getSaveView<TextView>(R.id.tv_lottery_analysis2_permanent_fortune)
+            .setTextColor(resources.getColor(model.permanentData.fortuneColor, theme))
         holder.setText(
             R.id.tv_lottery_analysis2_permanent_without_times,
             "已${model.permanentData.withoutTimes}抽未出金"
@@ -127,15 +134,15 @@ class LotteryAnalysis2Activity : BaseActivity() {
     }
 }
 
-class MyAdapter :
+class MyAdapter(val mContext: LotteryAnalysis2Activity) :
     BaseQuickAdapter<LotteryAnalysisModel2.DataEntity, BaseViewHolder>(R.layout.item_lottery_analysis2) {
 
     private val permanentArray = arrayOf(
-        "刻晴","莫娜","七七","迪卢克", "琴",//角色
+        "刻晴", "莫娜", "七七", "迪卢克", "琴",//角色
         //武器
-        "阿莫斯之弓","天空之翼","四风原典",
-        "天空之卷","和璞鸢","天空之脊",
-        "狼的末路", "天空之傲","天空之刃","风鹰剑"
+        "阿莫斯之弓", "天空之翼", "四风原典",
+        "天空之卷", "和璞鸢", "天空之脊",
+        "狼的末路", "天空之傲", "天空之刃", "风鹰剑"
     )
 
     override fun convert(holder: BaseViewHolder, item: LotteryAnalysisModel2.DataEntity) {
@@ -150,13 +157,17 @@ class MyAdapter :
                 "${item.name}(${item.distanceCount})"
             )
         } else {
-            ivHeader.setImageURI(Uri.parse(headerEntity.path))
+            if (headerEntity.path.isNotEmpty()) {
+                ivHeader.setImageURI(Uri.parse(headerEntity.path))
+            } else {
+                GlideUtil.load(mContext,ivHeader,headerEntity.url)
+            }
             val name =
                 if (headerEntity.nickname.isEmpty()) headerEntity.name else headerEntity.nickname
             holder.setText(R.id.tv_lottery_analysis2_item_times, "${name}(${item.distanceCount})")
         }
 
-        holder.setGone(R.id.fl_lottery_analysis2_item_type,permanentArray.contains(item.name))
+        holder.setGone(R.id.fl_lottery_analysis2_item_type, permanentArray.contains(item.name))
     }
 }
 
